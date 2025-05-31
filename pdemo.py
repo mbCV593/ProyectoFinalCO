@@ -22,7 +22,7 @@ class ToolTip:
         self.tip_window = tw = tk.Toplevel(self.widget)
         tw.wm_overrideredirect(True)
         tw.wm_geometry(f"+{int(x)}+{int(y)}")
-        label = tk.Label(tw, text=self.text, justify=tk.LEFT,background="#ffffe0", relief=tk.SOLID, borderwidth=1,font=("tahoma", "10", "normal"))
+        label = tk.Label(tw, text=self.text, justify=tk.LEFT,background="#ffffe0", relief=tk.SOLID, borderwidth=1,font=("tahoma", "18", "normal"))
         label.pack(ipadx=1)
 
     def hide_tip(self, event=None):
@@ -52,45 +52,41 @@ class GrammarApp:
         button_name_vertical_padding = (4, 0) 
         self.f5_button = Button(
             header_line_frame, text="F5", command=self.process_grammar_event,
-            font=('Arial', 11, 'bold'), relief=tk.RAISED, borderwidth=2,
+            font=('Arial', 16, 'bold'), relief=tk.RAISED, borderwidth=2,
             padx=10, pady=2 
         )
         self.f5_button.pack(side=tk.LEFT, padx=(0, 5), pady=button_name_vertical_padding)
         ToolTip(self.f5_button, "EJECUTAR (F5)")
     
         Label(header_line_frame, 
-            text="Christian Velásquez\t090 - 22 - 7443",
-            fg=self.instruction_fg, bg=self.bg_color, font=('Arial', 11, 'italic')
+            text="Christian Velásquez\t090 - 22 - 7443        Preciona F5 o el Boton F5",
+            fg=self.instruction_fg, bg=self.bg_color, font=('Arial', 16, 'italic')
         ).pack(side=tk.LEFT, padx=(5, 20), pady=button_name_vertical_padding)
         self.text_editor = scrolledtext.ScrolledText(
-            input_controls_frame, wrap=tk.WORD, height=8, width=45,
-            relief=tk.SUNKEN, borderwidth=1, font=('Consolas', 14),
+            input_controls_frame, wrap=tk.WORD, height=4, width=5,
+            relief=tk.SUNKEN, borderwidth=1, font=('Consolas', 18),
             bg=self.textbox_bg 
         )
         self.text_editor.pack(fill=tk.X, expand=True, pady=(5, 5))
         instruction_display_frame = Frame(input_controls_frame, bg=self.bg_color)
         instruction_display_frame.pack(fill=tk.X, pady=(5,0))
-        Label(instruction_display_frame, 
-            text="Presiona F5 o el botón para procesar",
-            fg=self.instruction_fg, bg=self.bg_color, font=('Arial', 11)
-        ).pack(side=tk.LEFT, anchor=tk.W)
         display_area_frame = Frame(main_app_frame, bg=self.bg_color)
         display_area_frame.pack(side=tk.TOP, fill=tk.BOTH, expand=True, pady=(10,0))
         self.original_grammar_frame = Frame(display_area_frame, bg=self.bg_color, padx=5)
         self.original_grammar_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         Label(self.original_grammar_frame, text="Gramática Original",
-            bg=self.bg_color, fg=self.label_fg_color, font=('Arial', 16, 'bold')
+            bg=self.bg_color, fg=self.label_fg_color, font=('Arial', 18, 'bold')
         ).pack(pady=(0,5))
         self.listbox_v_orig, self.listbox_t_orig, self.tree_orig = \
             self._create_grammar_display_widgets(self.original_grammar_frame, is_transformed_section=False)
         self.transformed_grammar_frame = Frame(display_area_frame, bg=self.bg_color, padx=5)
         self.transformed_grammar_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
         Label(self.transformed_grammar_frame, text="Gramática Sin Recursividad por Izquierda",
-            bg=self.bg_color, fg=self.label_fg_color, font=('Arial', 16, 'bold')
+            bg=self.bg_color, fg=self.label_fg_color, font=('Arial', 18, 'bold')
         ).pack(pady=(0,5))
         self.transformed_grammar_textbox = scrolledtext.ScrolledText(
-            self.transformed_grammar_frame, wrap=tk.WORD, height=6, 
-            relief=tk.SUNKEN, borderwidth=1, font=('Consolas', 13),
+            self.transformed_grammar_frame, wrap=tk.WORD, height=5, 
+            relief=tk.SUNKEN, borderwidth=1, font=('Consolas', 16),
             state=tk.DISABLED, bg=self.textbox_bg
         )
         self.transformed_grammar_textbox.pack(fill=tk.X, expand=False, pady=(2, 10))
@@ -98,19 +94,17 @@ class GrammarApp:
             self._create_grammar_display_widgets(self.transformed_grammar_frame, is_transformed_section=True)
         self.root.bind("<F5>", self.process_grammar_event)
         style = ttk.Style()
-        style.configure("Treeview", font=('Arial', 12), rowheight=22)
-        style.configure("Treeview.Heading", font=('Arial', 12, 'bold'))
+        style.configure("Treeview", font=('Arial', 16), rowheight=22)
+        style.configure("Treeview.Heading", font=('Arial', 16, 'bold'))
 
     def _create_grammar_display_widgets(self, parent_frame, is_transformed_section=False):
         vt_frame = Frame(parent_frame, bg=self.bg_color)
         vt_frame.pack(side=tk.TOP, fill=tk.X, pady=(0,5))
-        Label(vt_frame, text="Vectores", bg=self.bg_color,
-            fg=self.label_fg_color, font=('Arial', 14, 'bold')).pack()
         var_term_frame = Frame(vt_frame, bg=self.bg_color)
         var_term_frame.pack(fill=tk.X)
         listbox_v = self._create_listbox_in_frame(var_term_frame, "V")
         listbox_t = self._create_listbox_in_frame(var_term_frame, "T")
-        Label(parent_frame, text="Matriz de Producciones", font=('Arial', 14, 'bold'),
+        Label(parent_frame, text="Matriz de Producciones", font=('Arial', 18, 'bold'),
             bg=self.bg_color, fg=self.label_fg_color).pack(pady=(5, 5))
         tree_height = 7 if not is_transformed_section else 5 
         tree = ttk.Treeview(parent_frame, columns=("var", "prod"), show="headings", height=tree_height)
@@ -124,12 +118,12 @@ class GrammarApp:
     def _create_listbox_in_frame(self, parent, title):
         frame = Frame(parent, bg=self.bg_color)
         frame.pack(side=tk.LEFT, fill=tk.Y, expand=True, padx=5)
-        Label(frame, text=title, font=('Arial', 12, 'bold'),
+        Label(frame, text=title, font=('Arial', 18, 'bold'),
             bg=self.bg_color, fg=self.label_fg_color).pack()
         listbox = tk.Listbox(
-            frame, height=5, width=8, exportselection=False,
+            frame, height=9, width=8, exportselection=False,
             bg=self.listbox_bg, fg=self.label_fg_color,
-            selectbackground=self.listbox_select_bg, relief=tk.FLAT, font=('Arial', 12)
+            selectbackground=self.listbox_select_bg, relief=tk.FLAT, font=('Arial', 16)
         )
         listbox.pack(fill=tk.BOTH, expand=True)
         return listbox
